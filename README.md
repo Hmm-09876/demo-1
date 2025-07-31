@@ -1,8 +1,10 @@
-MO TA DEMO
+# MO TA DEMO
 
 ***
-pip install --upgrade pip
-pip install awscli
-pip install awscli-local[ver1]
+`pip install --upgrade pip`
+
+`pip install awscli`
+
+`pip install awscli-local[ver1]`
 
 
