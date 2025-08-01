@@ -1,0 +1,28 @@
+import yaml
+
+ci = {
+    "name": "CI",
+    "on": ["push", "pull_request"],
+    "jobs": {
+        "build_and_test": { 
+            "runs-on": "ubuntu-latest",
+            "steps": [
+                {"uses": "actions/checkout@v3"},
+                {
+                    "name": "Set up Python",
+                    "uses": "actions/setup-python@v4",
+                    "with": {
+                        "python-version": "3.x"
+                    }
+                },
+                {"name": "Install deps", "run": "pip install pytest localstack-client"},
+                {"name": "Run tests", "run": "PYTHONPATH=. pytest test/"}
+            ]
+        }
+    }
+}
+
+with open(".github/workflows/ci.yml", "w") as f:
+    yaml.dump(ci, f, sort_keys=False)
+print("Generated CI workflow.")
+                
