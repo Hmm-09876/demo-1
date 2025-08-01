@@ -71,6 +71,12 @@ import os
 
 compose_dir = os.path.dirname(os.path.abspath(__file__))
 
+subprocess.run(
+    ["docker", "compose", "down", "--remove-orphans", "--volumes"],
+    cwd=compose_dir,
+    check=False
+)
+
 # Dùng 'docker compose' thay vì 'docker-compose'
 subprocess.run(
     ["docker", "compose", "up", "-d"],
