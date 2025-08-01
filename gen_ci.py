@@ -38,7 +38,7 @@ ci = {
                     "run": (
                         #"docker compose -f localstack/docker-compose.yml up -d && "
                         "docker compose -f localstack/docker-compose.yml up -d localstack && "
-                        "until curl -s http://localhost:4566/health | grep 'UP'; do sleep 2; done"
+                        "until curl -s http://localhost:4566/health | grep 'running'; do sleep 2; done"
                     )
                 },
                 {"name": "Deploy LocalStack resources", "run": "python localstack/localstack.py"},
