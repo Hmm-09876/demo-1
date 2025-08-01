@@ -47,7 +47,7 @@ ci = {
                 #     )
                 # },
                 {"name": "Deploy LocalStack resources", "run": "python localstack/localstack.py"},
-                {"name": "Run tests", "run": "PYTHONPATH=. pytest test/"},
+                {"name": "Run tests", "env": {"PYTHONPATH": "${{ gihub,workspace }}"},"run": "pytest test/"},
                 {"name": "Tear down LocalStack", 
                  "if": "always()",
                  "run": "docker compose -f localstack/docker-compose.yml down"}
