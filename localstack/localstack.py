@@ -86,6 +86,6 @@ subprocess.run([
     "--function-name", "notesHandler",
     "--runtime", "python3.10",
     "--handler", "handler.main",
-    "--zip-file", "fileb://function.zip",
+    "--zip-file", f"fileb://{os.path.join(compose_dir, 'function.zip')}",
     "--role", "arn:aws:iam::123456789012:role/lambda"
 ], check=True)
