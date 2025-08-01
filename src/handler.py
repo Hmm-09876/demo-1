@@ -9,7 +9,6 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
-# Thiết lập client S3 hướng vào LocalStack
 s3 = boto3.client(
     's3',
     endpoint_url=os.getenv('LOCALSTACK_URL', 'http://localhost:4566'),
@@ -35,7 +34,7 @@ def main(event, context):
     logger.debug("EVENT RECEIVED: %s", event)
     route = event.get("routeKey") or f"{event.get('httpMethod')} {event.get('path', '')}"
     logger.debug("routeKey resolved to: %s", route)
-    
+
     try:
         if method == 'POST' and path == '/notes':
             return create_note(json.loads(body))
@@ -69,7 +68,6 @@ def list_notes():
     return response(200, {"notes": ids})
 
 def update_note(note_id, data):
-    # Ghi đè nội dung mới lên cùng key
     s3.put_object(Bucket=BUCKET, Key=note_id, Body=json.dumps(data))
     return response(200, {"message": "Note updated", "id": note_id})
 
