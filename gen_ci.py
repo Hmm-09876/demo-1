@@ -10,21 +10,21 @@ ci = {
     "jobs": {
         "build_and_test": {
             "runs-on": "ubuntu-latest",
-            "services": {
-                "localstack": {
-                    "image": "localstack/localstack",
-                    "ports": ["4566:4566"],
-                    "options": (
-                        #"--health-cmd 'curl -s http://localhost:4566/health | grep 'UP' ' 
-                        "--health-cmd \"curl -s http://localhost:4566/health | grep 'UP'\" " 
-                        "--health-interval=5s --health-timeout=2s --health-retries=5"
-                    ),
-                    "env": {
-                        "SERVICES": "s3,lambda",
-                        "DEBUG": "1"
-                    }
-                }
-            },
+            # "services": {
+            #     "localstack": {
+            #         "image": "localstack/localstack",
+            #         "ports": ["4566:4566"],
+            #         "options": (
+            #             #"--health-cmd 'curl -s http://localhost:4566/health | grep 'UP' ' 
+            #             "--health-cmd \"curl -s http://localhost:4566/health | grep 'UP'\" " 
+            #             "--health-interval=5s --health-timeout=2s --health-retries=5"
+            #         ),
+            #         "env": {
+            #             "SERVICES": "s3,lambda",
+            #             "DEBUG": "1"
+            #         }
+            #     }
+            # },
             "steps": [
                 {"uses": "actions/checkout@v3"},
                 {
@@ -36,12 +36,16 @@ ci = {
                 {
                     "name": "Start LocalStack",
                     "run": (
-                        "docker compose -f localstack/docker-compose.yml up -d && "
+                        #"docker compose -f localstack/docker-compose.yml up -d && "
+                        "docker compose -f localstack/docker-compose.yml up -d localstack-main && "
                         "until curl -s http://localhost:4566/health | grep 'UP'; do sleep 2; done"
                     )
                 },
                 {"name": "Deploy LocalStack resources", "run": "python localstack/localstack.py"},
-                {"name": "Run tests", "run": "PYTHONPATH=. pytest test/"}
+                {"name": "Run tests", "run": "PYTHONPATH=. pytest test/"},
+                {"name": "Tear down LocalStack", 
+                 "if": "always()",
+                 "run": "docker compose -f localstack/docker-compose.yml down"}
             ]
         }
     }
