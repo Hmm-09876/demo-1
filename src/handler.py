@@ -1,8 +1,13 @@
 
 import json
 import os
+import logging
 import boto3
 from botocore.exceptions import ClientError
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
 
 # Thiết lập client S3 hướng vào LocalStack
 s3 = boto3.client(
@@ -27,6 +32,10 @@ def main(event, context):
     body = event.get('body')
     key = event.get('queryStringParameters', {}).get('id')
 
+    logger.debug("EVENT RECEIVED: %s", event)
+    route = event.get("routeKey") or f"{event.get('httpMethod')} {event.get('path', '')}"
+    logger.debug("routeKey resolved to: %s", route)
+    
     try:
         if method == 'POST' and path == '/notes':
             return create_note(json.loads(body))
