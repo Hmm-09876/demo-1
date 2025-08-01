@@ -33,26 +33,29 @@ import subprocess
 import time
 import os
 
-# nếu bạn vẫn muốn dùng docker-compose, trường hợp local:
-compose_dir = os.path.dirname(__file__)  # sẽ là demo-1/localstack
+# Lấy chính xác thư mục đang chứa file này:
+compose_dir = os.path.dirname(os.path.abspath(__file__))
+
+# 1) Nếu bạn vẫn muốn dùng docker-compose:
 subprocess.run(
     ["docker-compose", "up", "-d"],
     cwd=compose_dir,
     check=True
 )
 
-# chờ LocalStack khởi động
+# Chờ LocalStack khởi động (bạn có thể điều chỉnh thời gian hoặc dùng health-check)
 time.sleep(30)
 
-# rồi deploy qua awslocal
+# 2) Deploy S3 bucket
 subprocess.run([
-    "awslocal", "--endpoint-url=http://localhost:4566", "s3api", "create-bucket", 
+    "awslocal", "--endpoint-url=http://localhost:4566", "s3api", "create-bucket",
     "--bucket", "notes-bucket"
 ], check=True)
 
+# 3) Deploy Lambda
 subprocess.run([
     "awslocal", "--endpoint-url=http://localhost:4566", "lambda", "create-function",
-    "--function-name", "notesHandler", 
+    "--function-name", "notesHandler",
     "--runtime", "python3.10",
     "--handler", "handler.main",
     "--zip-file", "fileb://function.zip",
