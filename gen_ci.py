@@ -18,7 +18,7 @@ ci = {
                         "--health-cmd 'curl -s http://localhost:4566/health | grep 'UP' ' "
                         "--health-interval=5s --health-timeout=2s --health-retries=5"
                     ),
-                    "environment": {
+                    "env": {
                         "SERVICES": "s3,lambda",
                         "DEBUG": "1"
                     }
