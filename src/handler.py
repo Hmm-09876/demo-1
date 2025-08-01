@@ -96,25 +96,27 @@ def response(status_code, body):
 
 def main(event, context):
     method = event.get('httpMethod')
-    path = event.get('path', '')
+    # Mặc định path là '/notes' nếu không có key 'path'
+    path = event.get('path', '/notes')
     body = event.get('body')
     params = event.get('queryStringParameters') or {}
     key = params.get('id')
 
     try:
         if method == 'POST' and path == '/notes':
-            return create_note(body)
+            return create_note(json.loads(body))
         if method == 'GET' and path == '/notes':
             return list_notes()
         if method == 'GET' and path.startswith('/notes/') and key:
             return get_note(key)
         if method == 'PUT' and path.startswith('/notes/') and key:
-            return update_note(key, body)
+            return update_note(key, json.loads(body))
         if method == 'DELETE' and path.startswith('/notes/') and key:
             return delete_note(key)
         return response(400, {"error": "Unsupported route or missing id"})
     except ClientError as e:
         return response(500, {"error": str(e)})
+
 
 
 def create_note(body):
