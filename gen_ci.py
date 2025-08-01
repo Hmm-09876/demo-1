@@ -32,17 +32,17 @@ ci = {
                     "uses": "actions/setup-python@v4",
                     "with": {"python-version": "3.x"}
                 },
-                {"name": "Set up LocalStack", "uses": "localstack/localstack@v0.2.0",
-                 "with": {"localstack_version": "4.7.1", "services": "s3,lambda"}},
                 {"name": "Install dependencies", "run": "pip install pytest boto3 localstack-client"},
-                # {
-                #     "name": "Start LocalStack",
-                #     "run": (
-                #         #"docker compose -f localstack/docker-compose.yml up -d && "
-                #         "docker compose -f localstack/docker-compose.yml up -d localstack && "
-                #         "until curl -s http://localhost:4566/health | grep 'running'; do sleep 2; done"
-                #     )
-                # },
+                {
+                    "name": "Start LocalStack",
+                    "run": (
+                        #"docker compose -f localstack/docker-compose.yml up -d && "
+                        "docker compose -f localstack/docker-compose.yml up -d localstack && "
+                        #"until curl -s http://localhost:4566/health | grep 'running'; do sleep 2; done"
+                        "until [ \"$(docker inspect --format='{{.State.Health.Status}}' localstack-main)\" = \"healthy\" ]; do sleep 1; done"
+
+                    )
+                },
                 {"name": "Deploy LocalStack resources", "run": "python localstack/localstack.py"},
                 {"name": "Run tests", "run": "PYTHONPATH=. pytest test/"},
                 {"name": "Tear down LocalStack", 
