@@ -33,7 +33,7 @@ ci = {
                     "with": {"python-version": "3.x"}
                 },
                 {"name": "Install dependencies", "run": "pip install pytest boto3 localstack-client"},
-                {"name": "Set up LocalStack", "uses": "localstack/localstack@v2",
+                {"name": "Set up LocalStack", "uses": "localstack/setup-localstack@v0.2.4",
                  "with": {"localstack-version": "latest", "services": "s3,lambda"}},
 
                 # {
