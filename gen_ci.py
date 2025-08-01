@@ -1,28 +1,52 @@
+import os
 import yaml
 
+# Thư mục workflow
+workflow_dir = ".github/workflows"
+os.makedirs(workflow_dir, exist_ok=True)
 ci = {
     "name": "CI",
     "on": ["push", "pull_request"],
     "jobs": {
-        "build_and_test": { 
+        "build_and_test": {
             "runs-on": "ubuntu-latest",
+            "services": {
+                "localstack": {
+                    "image": "localstack/localstack",
+                    "ports": ["4566:4566"],
+                    "options": (
+                        "--health-cmd 'curl -s http://localhost:4566/health | grep 'UP' ' "
+                        "--health-interval=5s --health-timeout=2s --health-retries=5"
+                    ),
+                    "environment": {
+                        "SERVICES": "s3,lambda",
+                        "DEBUG": "1"
+                    }
+                }
+            },
             "steps": [
                 {"uses": "actions/checkout@v3"},
                 {
                     "name": "Set up Python",
                     "uses": "actions/setup-python@v4",
-                    "with": {
-                        "python-version": "3.x"
-                    }
+                    "with": {"python-version": "3.x"}
                 },
-                {"name": "Install deps", "run": "pip install pytest localstack-client"},
+                {"name": "Install dependencies", "run": "pip install pytest boto3 localstack-client"},
+                {
+                    "name": "Start LocalStack",
+                    "run": (
+                        "docker compose -f localstack/docker-compose.yml up -d && "
+                        "until curl -s http://localhost:4566/health | grep 'UP'; do sleep 2; done"
+                    )
+                },
+                {"name": "Deploy LocalStack resources", "run": "python localstack/localstack.py"},
                 {"name": "Run tests", "run": "PYTHONPATH=. pytest test/"}
             ]
         }
     }
 }
 
-with open(".github/workflows/ci.yml", "w") as f:
+with open(os.path.join(workflow_dir, "ci.yml"), "w") as f:
     yaml.dump(ci, f, sort_keys=False)
-print("Generated CI workflow.")
-                
+
+print("Generated CI workflow")
