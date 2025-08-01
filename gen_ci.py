@@ -1,7 +1,7 @@
 import os
 import yaml
 
-# Thư mục workflow
+
 workflow_dir = ".github/workflows"
 os.makedirs(workflow_dir, exist_ok=True)
 ci = {
