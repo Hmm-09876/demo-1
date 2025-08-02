@@ -1,6 +1,17 @@
 # MÔ TẢ DEMO
- Ở đây chỉ note lại những gì cần cài ban đầu thôi
 ***
+Mục tiêu demo-1
+1. Hiểu cách dùng Git và GitHub
+
+2. Biết cách tạo các script để sinh tự động cấu trúc dự án
+
+3. Hiểu CRUD cơ bản trong ứng dụng web/API
+
+4. Biết cách kiểm thử sản phẩm bằng Pytest
+
+5. Hiểu rõ hơn về CI
+***
+Những gì cần cài ban đầu
 ```
 ssh-keygen -t ed25519 -C "your_email@example.com"
 apt install git zip
