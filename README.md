@@ -1,6 +1,4 @@
-# MÔ TẢ DEMO
-***
-Mục tiêu demo-1
+# Mục tiêu demo-1
 1. Hiểu cách dùng Git và GitHub
 
 2. Biết cách tạo các script để sinh tự động cấu trúc dự án
@@ -11,7 +9,7 @@ Mục tiêu demo-1
 
 5. Hiểu rõ hơn về CI
 ***
-Những gì cần cài ban đầu
+# Những gì cần cài ban đầu
 ```
 ssh-keygen -t ed25519 -C "your_email@example.com"
 apt install git zip
@@ -21,7 +19,7 @@ apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-co
 pip install boto3 awscli awscli-local
 ```
 ***
-Cấu hình thông tin người dùng cho git
+# Cấu hình thông tin người dùng cho git
 
 `git config --global user.name "Your Name"`
 
