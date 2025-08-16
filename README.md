@@ -1,3 +1,5 @@
+[![CI](https://github.com/Hmm-09876/demo-1/actions/workflows/ci.yml/badge.svg)](https://github.com/Hmm-09876/demo-1/actions)
+
 # Mục tiêu demo-1
 1. Hiểu cách dùng Git và GitHub
 
