@@ -31,9 +31,9 @@ apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-co
 git clone https://github.com/Hmm-09876/demo-1.git
 cd demo-1/localstack
 ```
-
-`docker compose up -d`
-
+```
+docker compose up -d
+```
 ```
 python -m venv .venv && . .venv/bin/activate
 pip install -r requirements.txt
