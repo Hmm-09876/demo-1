@@ -5,10 +5,6 @@ name: CI
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
-    # env:
-    #   PATH: $HOME/.local/bin
-    # container:
-    #   image: ghcr.io/catthehacker/ubuntu:full-20.04
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python
@@ -20,29 +16,6 @@ jobs:
         pip install -r requirements.txt
         # pip install --user localstack-client awscli
         # echo "$HOME/.local/bin" >> $GITHUB_PATH
-    # - name: Install dependencies
-    #   run: |
-    #     set -eux
-    #     python -m pip install --upgrade pip
-    #     mkdir -p "$HOME/.local/bin" "$HOME/.local/lib"
-    #     python -m pip install pytest boto3 requests awscli
-    #     python -m pip install --user localstack-client
-    #     python -m pip show localstack-client || true
-    #     ls -la "$HOME/.local/bin" || true
-    #     echo "PATH=$HOME/.local/bin:$PATH" >> $GITHUB_ENV
-    #     export PATH="$HOME/.local/bin:$PATH"
-    #     echo "After export, which awslocal:"
-    #     command -v awslocal || true
-
-    # - name: Debug awslocal
-    #   run: |
-    #     echo "HOME=$HOME"
-    #     echo "PATH=$PATH"
-    #     echo "Contents of ~/.local/bin:"
-    #     ls -la $HOME/.local/bin || true
-    #     echo "Which awslocal:"
-    #     which awslocal || true
-    #     awslocal --version || true
 
     # - name: Set up LocalStack
     #   uses: localstack/setup-localstack@v0.2.4
